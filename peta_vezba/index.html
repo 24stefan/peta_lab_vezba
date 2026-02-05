@@ -17,6 +17,16 @@
     </div>
 </nav>
 
+<div class="music-player">
+    <button id="prevBtn">⏮</button>
+    <button id="playPauseBtn">▶</button>
+    <button id="nextBtn">⏭</button>
+    <span id="trackName">No track</span>
+
+    <audio id="audio"></audio>
+</div>
+
+
 <main>
     <h1>Stefan S.</h1>
     <p class="intro">osoba koja postoji</p>
@@ -40,6 +50,66 @@
         </tr>
     </table>
 </main>
+
+<script>
+const tracks = [
+    "./music/feud_milion_milja.mp3",
+    "./music/feud_vlast.mp3",
+    "./music/WAYFARER - To Enter My House Justified (OFFICIAL VIDEO) [9qGDuElSobk].mp3"
+];
+
+let currentTrack = 0;
+let isPlaying = false;
+
+const audio = document.getElementById("audio");
+const playPauseBtn = document.getElementById("playPauseBtn");
+const nextBtn = document.getElementById("nextBtn");
+const prevBtn = document.getElementById("prevBtn");
+const trackName = document.getElementById("trackName");
+
+function loadTrack(index) {
+    audio.src = tracks[index];
+    trackName.textContent = tracks[index].split("/").pop();
+}
+
+function playPause() {
+    if (isPlaying) {
+        audio.pause();
+        playPauseBtn.textContent = "▶";
+    } else {
+        audio.play();
+        playPauseBtn.textContent = "⏸";
+    }
+    isPlaying = !isPlaying;
+}
+
+function nextTrack() {
+    currentTrack = (currentTrack + 1) % tracks.length;
+    loadTrack(currentTrack);
+    audio.play();
+    isPlaying = true;
+    playPauseBtn.textContent = "⏸";
+}
+
+function prevTrack() {
+    currentTrack =
+        (currentTrack - 1 + tracks.length) % tracks.length;
+    loadTrack(currentTrack);
+    audio.play();
+    isPlaying = true;
+    playPauseBtn.textContent = "⏸";
+}
+
+playPauseBtn.addEventListener("click", playPause);
+nextBtn.addEventListener("click", nextTrack);
+prevBtn.addEventListener("click", prevTrack);
+
+audio.addEventListener("ended", nextTrack);
+
+// INIT
+loadTrack(currentTrack);
+</script>
+
 
 </body>
 </html>
